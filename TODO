@@ -1,0 +1,3 @@
+* add array-based validation result instead of text-based;
+* add new validation types;
+* review code.
