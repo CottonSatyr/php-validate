@@ -178,7 +178,7 @@
                                                          'group'   => 'correct'),
                           'common_be_different' => array('err_txt' => 'The values entered in fields "%field%" and "%val1%" must be different!',
                                                          'group'   => 'unique'),
-                          'valid_zip'         => array('err_txt' => 'Entered value in the field "%field%" is not a valid for selected country!',
+                          'valid_zip'           => array('err_txt' => 'Entered value in the field "%field%" is not a valid for selected country!',
                                                          'group'   => 'correct')
                         );
     
@@ -609,15 +609,6 @@
                     $err_text .= '<li>'.$err.'</li>';
                 }
                 $err_text .= '</ul></div>';
-                
-                
-                
-//                $err_text .= '<div class="alert"><div class="alert_message"><b>ERROR</b> - '.$valid_class[$key]['text'].'</div><ul>';
-//                foreach ($group as $k => $err)
-//                {
-//                    $err_text .= '<li class="alert_message_det">'.$err.'</li>';
-//                }
-//                $err_text .= '</ul></div>';
             }                        
         }
         else $err_text = true;
@@ -1190,7 +1181,7 @@
                     $check_rule = '\d{4}';
                 else $check_rule = '[\d]+';
             }        
-                           
+                          
             /*
              * check
              */
@@ -1198,8 +1189,6 @@
                return 1;
                else return 0;
         }
-        
-        
     }
     
 ?>
