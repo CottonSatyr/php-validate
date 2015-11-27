@@ -1,5 +1,10 @@
 # php-validate
 php-based script for various form validation
+you need to include validate.php file, define validation rule
+and use specific function. You will get the array or text with
+error (if there was some validation error) as a result.
+
+
  * 
  * validate.php
  * ------------------------------------------------------
