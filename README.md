@@ -1,5 +1,5 @@
 # php-validate
-php-based script for various form validation
+php-based script for various form validation.
 you need to include validate.php file, define validation rule
 and use specific function. You will get the array or text with
 error (if there was some validation error) as a result.
@@ -14,11 +14,11 @@ error (if there was some validation error) as a result.
  * it's used for validation of various form
  * ------------------------------------------------------
  * change log:
- *
- * [29.11.2015]
+ * 
+ *  [29.11.2015]
  * >>> changed scripts result from text-message to array.
  *     Now you can create your style of the error message.
- *
+ * 
  * [17.11.2015]
  * >>> you can now use `+` to add different fields values
  *     for `common_be_different` checks.
