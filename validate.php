@@ -10,6 +10,10 @@
  * ------------------------------------------------------
  * change log:
  * 
+ * [29.11.2015]
+ * >>> changed scripts result from text-message to array.
+ *     Now you can create your style of the error message.
+ * 
  * [17.11.2015]
  * >>> you can now use `+` to add different fields values
  *     for `common_be_different` checks.
@@ -251,9 +255,14 @@
      * --------------------------------------------------
      * $valid_rules_text    - list of fields which are bind to 
      *                        validations 2)
-     * &$fields_err          - list of fields that didn't pass
+     * &$fields_err         - list of fields that didn't pass
      *                        the checks (out)
-     * return               - error or fine message
+     * return               - array with the result. TRUE is returned
+     *                        If there is no errors. Array with error
+     *                        messages is return in a case of 
+     *                        validation errors. It's sctructure:
+     *                        ['name of error group 1'] => [ ['error text 1'],['error text 2],[...] ],
+     *                        ['name of error group 2'] => [ ['error text 3'],['error text 4],[...] ]
      */
     function InitCheck($valid_rules_text,&$fields_err)
     {
@@ -533,12 +542,11 @@
             }
             
             $err_text = '';
+            $err_array = array();
             foreach ($error as $fields => $err_list)
             {                                               
                 foreach($err_list as $k => $v)
-                {
-                    
-                    
+                {  
                     /*
                      * different message for common checks
                      */
@@ -599,8 +607,9 @@
              */
             foreach ($err_group as $key => $group)
             {
+                $err_array[$valid_class[$key]['text']] = $group;
                 
-                $err_text .= '<div class="alert alert-warning fade in margin-top-20">'
+                /*$err_text .= '<div class="alert alert-warning fade in margin-top-20">'
                            . '<a href="#" class="close" data-dismiss="alert" aria-label="'.$lang_global['alert_close'].'" title="'.$lang_global['alert_close'].'">&times;</a>'
                            . '<strong>ERROR</strong> - '.$valid_class[$key]['text'].''
                            . '<ul class="error_ul">';
@@ -608,12 +617,12 @@
                 {
                     $err_text .= '<li>'.$err.'</li>';
                 }
-                $err_text .= '</ul></div>';
+                $err_text .= '</ul></div>';*/       
             }                        
         }
-        else $err_text = true;
+        else $err_array = true;
         
-        return $err_text;
+        return $err_array;
     }
         
     /*

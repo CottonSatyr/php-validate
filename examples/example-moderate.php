@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <?php
     /*
      * 1. Init db connection for DB checks
@@ -19,107 +17,10 @@
      * 2. Add validation script
      * read about the rule inside the script
      */
-    require('validate.php');
+    require('../validate.php');
     
     /*
      * 3. Add validation rule
-     */
-    $valid_rules_text = 
-/*
- * The following things should be verified:
- * 1) Is group filled out? (required!)
- * 2) Do all of the selected groups [multiple select] exist? (only 1,2,3 are valid groups!)
- */
-  'group->must_be_filled#in_list_array|1@2@3<-'
-/*
- * 3) Is "salutation" filled out? (required)
- * 4) Does the salutation exist? (only 1,2,3 is a valid salutation!)
- * 5) Is only 1 salutation selected? (and not 2 or more, because this is not a multiple select!)*
- */ 
- .'salutation->must_be_filled#in_list_array|1@2@3#one_value_only<-'
-/*
- * 6) Is "street" filled out? required!
- */
- .'street->must_be_filled<-'           
-/* 
- * 7) Is "number" filled out? required!
- */ 
- .'number->must_be_filled<-'    
-/* 
- * 8) Is "zip" filled out? required!
- */ 
- .'zip->must_be_filled<-' 
-/* 
- * 9) Is "city" filled out? required!
- */ 
- .'city->must_be_filled<-'             
-/* 
- * 10) Is country filled out? (required!)
- * 11) Is only 1 country selected? (and not 2 or more, because this is not a multiple select!)
- * 12) Does the country exist? (only 1,2,3 is a valid country!)
- */ 
- .'country->must_be_filled#one_value_only#in_list_array|1@2@3<-'
-/* 
- * 10) Is state filled out? (required!)
- * 11) Is only 1 state selected? (and not 2 or more, because this is not a multiple select!)
- * 12) Does the state exist? (one 1 - 51 is a valid state!)
- * 13) Does the state match the country? If the country is germany, the state can be 1-16, if the country is Austria, the state can be 17-25, and if the country is Suiss, the state can be 26-51
- */ 
- .'state->must_be_filled#one_value_only#in_list_array|1}51#parent_in_list_array|1}16|state|1#parent_in_list_array|17}25|state|2#parent_in_list_array|26}51|state|3<-'
-/* 
- * 14) Is the "phone 1 country code" (the dropdown) filled out? (required!)
- */ 
- .'phone_1_country_code|Country code for phone 1->must_be_filled<-'  
-/* 
- * 15) Is "phone 1" (the text input) filled out? (required!)
- * 27) "phone 1" and "phone 2" can not have the same values!
- * 15.1) At least 4 digits!
- */ 
- .'phone_1|phone 1->must_be_filled#must_be_different|phone_2#at_least_4_digits<-' 
-/* 
- * 16) "phone 2 country code" (the dropdown) is optional. BUT, if "phone 2" (the text field) was filled out, then the "phone 2 country code" (the dropdown) is a required field!!
- */ 
- .'phone_2_country_code|Country code for phone 2->fields_together|phone_2<-'
-/* 
- * 17) "phone 2" (the text field) is optional. BUT, if "phone 2 country code" (the dropdown) was filled out, then the "phone 2" (the text field) is a required field!!
- * 17.1) At least 4 digits!
- */ 
- .'phone_2|phone 2->fields_together|phone_2_country_code#at_least_4_digits<-'
-/* 
- * 18) "fax country code" (the dropdown) is optional. BUT, if "fax" (the text field) was filled out, then the "fax country code" (the dropdown) is a required field!!
- */ 
- .'fax_country_code|Country code for fax->fields_together|fax<-'
-/* 
- * 19) "fax" (the text field) is optional. BUT, if "fax country code" (the dropdown) was filled out, then the "fax" (the text field) is a required field!!
- * 19.1) At least 4 digits.
- */
- .'fax->fields_together|fax_country_code#at_least_4_digits<-'
-/* 
- * 20) "email 1" has to be filled out (required!)
- * 21) "email 1" has to be a valid email!
- * 26) part) "email 1", and "email 2" can not have the same values!
- */
- .'email_1|email 1->must_be_filled#valid_email#must_be_different|email_2#must_be_different|email_2<-'
-/*  
- * 22) "email 2" is optional. BUT, if "email 2" was filled out, then it has to be a valid e-mail. 
- * 26) part) "email 2", and "email 3" can not have the same values!
- */ 
- .'email_2|email 2->valid_email#must_be_different|email_3<-'      
-/* 
- * 23) "email 3" is optional. BUT, if "email 3" was filled out, then it has to be a valid e-mail. 
- */ 
- .'email_3|email 3->valid_email<-'
-/* 
- * 24) Website is required!
- * 25) Website has to be a valid website!
- */ 
- .'website->must_be_filled#valid_url<-'
-/* 
- * 27) "phone 1" and "phone 2" can not have the same values!
- */            
-;
-    /*
-     * valid rule without comments:
      */
     $valid_rules_text = 'group->must_be_filled<-'
                        .'group->in_list_array|1@2@3<-'
@@ -191,7 +92,7 @@
     isset($_POST['email_5']) ? $email_5 = $_POST['email_5'] : $email_5 = '';
     isset($_POST['email_6']) ? $email_6 = $_POST['email_6'] : $email_6 = '';    
     isset($_POST['website']) ? $website = $_POST['website'] : $website = 'http://';        
-    $err_text = '';
+    $err_res = '';
     
     /*
      * select lists
@@ -350,15 +251,33 @@
         /*
          * run check
          */
-        $err_text = InitCheck($valid_rules_text,$fields_err);
+        $err_res = InitCheck($valid_rules_text,$fields_err);
         
-        if ($err_text === true)
-            $err_text = '';
+        if ($err_res === true)
+            $err_text = 'Validation passed successfully!';
+            else 
+            {
+                /*
+                 * create nice error message
+                 */
+                foreach ($err_res as $key => $group)
+                {
+                    $err_text .= '<div class="alert alert-warning fade in margin-top-20">'
+                               . '<a href="#" class="close" data-dismiss="alert" aria-label="'.$lang_global['alert_close'].'" title="'.$lang_global['alert_close'].'">&times;</a>'
+                               . '<strong>ERROR</strong> - '.$key
+                               . '<ul class="error_ul">';
+                    foreach ($group as $k => $err)
+                    {
+                        $err_text .= '<li>'.$err.'</li>';
+                    }
+                    $err_text .= '</ul></div>';       
+                }
+            }
     }
 
 ?>
-
-<html lang="de">
+<!DOCTYPE html>
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -398,12 +317,12 @@ td { vertical-align:top; }
             <?=$err_text;?>
         </div>    
     <!-- TOTAL STYPE CHANGE -->
-    <form method="POST" action="form_bootstrap.php">
+    <form method="POST" action="example-moderate.php">
         <input name="submit" type="hidden" value="1">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <p>
-                    <strong>Stammdaten</strong>                    
+                    <strong>Main data</strong>                    
                 </p>                
                 <div class="form-group">
                     <!-- group -->
@@ -427,7 +346,7 @@ td { vertical-align:top; }
                     <!-- C/O -->
                     <div class="row">
                         <div class="col-md-2 <?=isset($fields_err['co'])?$fields_err['co']:'';?>">
-                            <label class="control-label">C/O</label>
+                            <label class="control-label">Company name</label>
                         </div>
                         <div class="col-md-10 <?=isset($fields_err['co'])?$fields_err['co']:'';?>">
                             <input class="form-control" type="text" name="co" value="<?=$co;?>">                            
@@ -512,7 +431,7 @@ td { vertical-align:top; }
             </div>
             <div class="col-xs-12 col-sm-6">    
                 <p>
-                    <strong>Kontaktdaten</strong>                    
+                    <strong>Contacts</strong>                    
                 </p>                
                 <div class="form-group">
                     <!-- Phone 1 -->
