@@ -1,3 +1,6 @@
-* add array-based validation result instead of text-based;
+TODO:
 * add new validation types;
 * review code.
+
+Done:
+* add array-based validation result instead of text-based;
