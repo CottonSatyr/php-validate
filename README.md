@@ -14,7 +14,11 @@ error (if there was some validation error) as a result.
  * it's used for validation of various form
  * ------------------------------------------------------
  * change log:
- * 
+ *
+ * [29.11.2015]
+ * >>> changed scripts result from text-message to array.
+ *     Now you can create your style of the error message.
+ *
  * [17.11.2015]
  * >>> you can now use `+` to add different fields values
  *     for `common_be_different` checks.
